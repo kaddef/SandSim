@@ -1,0 +1,11 @@
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+#simBoard {
+    width: 500px;
+    height: 500px;
+    image-rendering: pixelated;
+}
