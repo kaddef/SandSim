@@ -2,7 +2,7 @@ import { Sand, Stone, Water } from "./element.js";
 import gameConfig from "./config.js";
 const { gameWidth, gameHeight, unitSize, canvas, ctx, board } = gameConfig;
 var selectedElement = null;
-var spawnSize = 1;
+var spawnSize = 0;
 
 canvas. addEventListener("click", function(event) {
     var x = event.offsetX;
@@ -51,16 +51,16 @@ document.addEventListener("keydown", function(event) {
         console.log("Water Selected")
     }
     if(key === 'KeyG'){
-        spawnSize = 1;
-        console.log("Spawn Size is 1")
+        spawnSize = 0;
+        console.log("Spawn Size is 0")
     }
     if(key === 'KeyH'){
         spawnSize = 3;
-        console.log("Spawn Size is 5")
+        console.log("Spawn Size is 3")
     }
     if(key === 'KeyJ'){
         spawnSize = 5;
-        console.log("Spawn Size is 10")
+        console.log("Spawn Size is 5")
     }
     if(key === "Space"){
         console.log("Space")
@@ -86,16 +86,36 @@ const FloorToTen = function(number) {
 }
 
 const InsertElementByMatrix = function (matrixX,matrixY,spawnSize,elementType) {
-    if(elementType==="Sand") {
-        board[matrixX][matrixY] = new Sand(matrixX, matrixY, unitSize)
+    //console.log(`MiddlePoint: Y:${matrixY}/X:${matrixX}`)
+    for(var y = matrixY-spawnSize; y<= matrixY+spawnSize; y++)
+    {
+        for(var x = matrixX-spawnSize; x<= matrixX+spawnSize; x++)
+        {
+            //console.log(`Y:${y}/X:${x}`);
+            if(elementType==="Sand") {
+                board[x][y] = new Sand(x, y, unitSize)
+            }
+            else if(elementType==="Stone") {
+                board[x][y] = new Stone(x, y, unitSize)
+            }
+            else if(elementType==="Water") {
+                board[x][y] = new Water(x, y, unitSize)
+            }
+            board[x][y].draw(ctx)
+        }
     }
-    else if(elementType==="Stone") {
-        board[matrixX][matrixY] = new Stone(matrixX, matrixY, unitSize)
-    }
-    else if(elementType==="Water") {
-        board[matrixX][matrixY] = new Water(matrixX, matrixY, unitSize)
-    }
-    board[matrixX][matrixY].draw(ctx)
+
+    // if(elementType==="Sand") {
+    //     board[matrixX][matrixY] = new Sand(matrixX, matrixY, unitSize)
+    // }
+    // else if(elementType==="Stone") {
+    //     board[matrixX][matrixY] = new Stone(matrixX, matrixY, unitSize)
+    // }
+    // else if(elementType==="Water") {
+    //     board[matrixX][matrixY] = new Water(matrixX, matrixY, unitSize)
+    // }
+    // board[matrixX][matrixY].draw(ctx)
+    
 }
 // I can probably make this in one for loop
 const SimulationLoop = function()
