@@ -1,7 +1,8 @@
-import { Sand, Stone } from "./element.js";
+import { Sand, Stone, Water } from "./element.js";
 import gameConfig from "./config.js";
 const { gameWidth, gameHeight, unitSize, canvas, ctx, board } = gameConfig;
 var selectedElement = null;
+var spawnSize = 1;
 
 canvas. addEventListener("click", function(event) {
     var x = event.offsetX;
@@ -16,16 +17,19 @@ canvas. addEventListener("click", function(event) {
         console.log("Please select element")
         return
     }
-    if(board[x][y] != 0)
-    {
-        console.log("Element Olan Yere Yeni Element Koyamazsin")
-        return
-    }
+    // if(board[x][y] != 0)
+    // {
+    //     console.log("Element Olan Yere Yeni Element Koyamazsin")
+    //     return
+    // }
     if(selectedElement===Sand) {
-        InsertElementByMatrix(x, y, "Sand")
+        InsertElementByMatrix(x, y, spawnSize, "Sand")
     }
     else if(selectedElement===Stone) {
-        InsertElementByMatrix(x, y, "Stone")
+        InsertElementByMatrix(x, y, spawnSize, "Stone")
+    }
+    else if(selectedElement===Water) {
+        InsertElementByMatrix(x, y, spawnSize, "Water")
     }
 })
 
@@ -43,14 +47,27 @@ document.addEventListener("keydown", function(event) {
         console.log("Stone Selected")
     }
     if(key === 'KeyU'){
-        console.log("Su Gelecek")
+        selectedElement = Water;
+        console.log("Water Selected")
+    }
+    if(key === 'KeyG'){
+        spawnSize = 1;
+        console.log("Spawn Size is 1")
+    }
+    if(key === 'KeyH'){
+        spawnSize = 3;
+        console.log("Spawn Size is 5")
+    }
+    if(key === 'KeyJ'){
+        spawnSize = 5;
+        console.log("Spawn Size is 10")
     }
     if(key === "Space"){
         console.log("Space")
-        X = Math.floor(Math.random() * ((gameWidth-unitSize)/unitSize))
-        Y = Math.floor(Math.random() * ((gameHeight-unitSize)/unitSize))
+        let X = Math.floor(Math.random() * ((gameWidth-unitSize)/unitSize))
+        let Y = Math.floor(Math.random() * ((gameHeight-unitSize)/unitSize))
     
-        InsertElementByMatrix(X, Y, "Sand")
+        InsertElementByMatrix(X, Y, 1, "Sand")
     }
     if(key === 'Enter'){
         //debugger
@@ -67,16 +84,20 @@ document.addEventListener("keydown", function(event) {
 const FloorToTen = function(number) {
     return ~~(number/10) * 10
 }
-const InsertElementByMatrix = function (matrixX,matrixY,elementType) {
+
+const InsertElementByMatrix = function (matrixX,matrixY,spawnSize,elementType) {
     if(elementType==="Sand") {
         board[matrixX][matrixY] = new Sand(matrixX, matrixY, unitSize)
     }
     else if(elementType==="Stone") {
         board[matrixX][matrixY] = new Stone(matrixX, matrixY, unitSize)
     }
+    else if(elementType==="Water") {
+        board[matrixX][matrixY] = new Water(matrixX, matrixY, unitSize)
+    }
     board[matrixX][matrixY].draw(ctx)
 }
-
+// I can probably make this in one for loop
 const SimulationLoop = function()
 {  
     for(var y = board[0].length - 1; y>=0; y--)
@@ -102,6 +123,7 @@ const SimulationLoop = function()
             {
                 //debugger
                 board[x][y].draw(ctx)
+                board[x][y].hasMoved = false;
             }
         }
     }
