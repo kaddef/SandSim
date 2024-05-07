@@ -22,7 +22,7 @@ class Stone {
 }
 
 class Sand {
-    color = "red"
+    color = "#b07a2d"
     x;
     y;
 
