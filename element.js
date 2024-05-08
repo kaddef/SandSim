@@ -39,12 +39,30 @@ class Sand {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x*unitSize,this.y*unitSize,unitSize,unitSize)
     }
+
     move(newX, newY) {
         board[newX][newY] = board[this.x][this.y];
         board[this.x][this.y] = 0;
         this.x = newX;
         this.y = newY;
     }
+
+    switchPlaces(newX, newY) {
+        //debugger
+        var temp = board[this.x][this.y];
+
+        board[this.x][this.y] = board[newX][newY];
+        board[newX][newY] = temp;
+
+        var tempX = board[this.x][this.y].x
+        var tempY = board[this.x][this.y].y
+
+        board[this.x][this.y].x = board[newX][newY].x;
+        board[this.x][this.y].y = board[newX][newY].y;
+        board[newX][newY].x = tempX;
+        board[newX][newY].y = tempY;
+    }
+
     moveIfThereIsRoom() {
         //debugger
         // if(this.checkBelow()) {
@@ -63,6 +81,15 @@ class Sand {
             this.move(this.x, this.y+1)
             return
         }
+
+        const belowBlock = board[this.x][this.y + 1];
+        if (belowBlock instanceof Water) {
+            //debugger
+            this.switchPlaces(this.x, this.y + 1);
+            this.draw();
+            return;
+        }
+        
         if(randomZeroOrOne() === 1) {
             if(this.checkRightDiagonal()) {
                 this.move(this.x+1, this.y+1)

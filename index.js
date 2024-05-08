@@ -62,6 +62,23 @@ document.addEventListener("keydown", function(event) {
         spawnSize = 5;
         console.log("Spawn Size is 5")
     }
+    if(key === "KeyR"){
+        console.log("Redrawing")
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(var x = 0; x < board.length; x++)
+        {
+            
+            for(var y = board[0].length - 1; y>=0; y--)
+            {
+                if(board[x][y] != 0)
+                {
+                    //debugger
+                    board[x][y].draw(ctx)
+                    board[x][y].hasMoved = false;
+                }
+            }
+        }
+    }
     if(key === "Space"){
         console.log("Space")
         let X = Math.floor(Math.random() * ((gameWidth-unitSize)/unitSize))
@@ -127,8 +144,8 @@ const SimulationLoop = function()
             if(board[x][y] != 0)
             {
                 //debugger
-                ctx.fillStyle = "red";
-                ctx.fillRect(x*unitSize,y*unitSize,unitSize,unitSize)
+                // ctx.fillStyle = "red";
+                // ctx.fillRect(x*unitSize,y*unitSize,unitSize,unitSize)
                 board[x][y].moveIfThereIsRoom()
             }
         }
