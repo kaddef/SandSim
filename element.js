@@ -63,7 +63,7 @@ class Sand {
         board[newX][newY].y = tempY;
     }
 
-    moveIfThereIsRoom() {
+    moveIfThereIsRoom() { // This is a mess
         //debugger
         // if(this.checkBelow()) {
         //     this.move(this.x, this.y+1)
@@ -110,6 +110,30 @@ class Sand {
                 return
             }
         }
+        //debugger
+        let leftDiagonalBlock, rightDiagonalBlock;
+        //console.log(this.y+1)
+        //console.log(this.x+1)
+        //console.log(gameHeight/unitSize)
+        //console.log(gameWidth/unitSize)
+        if(this.y+1 < gameHeight/unitSize && this.x+1 < gameWidth/unitSize && this.y+1 > -1 && this.x+1 > -1) {
+            rightDiagonalBlock = board[this.x+1][this.y+1];
+        }
+        if(this.y+1 > -1 && this.x-1 > -1 && this.y+1 < gameHeight/unitSize && this.x-1 < gameWidth/unitSize) {
+            leftDiagonalBlock = board[this.x-1][this.y+1];
+        }
+        if (leftDiagonalBlock && leftDiagonalBlock instanceof Water) {
+            //debugger
+            this.switchPlaces(this.x-1, this.y+1);
+            this.draw();
+            return;
+        }
+        if (rightDiagonalBlock && rightDiagonalBlock instanceof Water) {
+            //debugger
+            this.switchPlaces(this.x+1, this.y+1);
+            this.draw();
+            return;
+        }
     }
 
     checkBelow() {
@@ -140,7 +164,7 @@ class Sand {
     checkLeftDiagonal() {
         var y = this.y+1
         var x = this.x-1
-        if(y >= gameHeight/unitSize || x <=- 1 || board[x][y] != 0) {
+        if(y >= gameHeight/unitSize || x <=- 1 || board[x][y] != 0) {//gameHeight/unitSize probably wrong but working anyway
             //console.log("SOL DİAGONAL BOŞ DEĞİL")
             return false
         }

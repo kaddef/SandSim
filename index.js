@@ -1,7 +1,7 @@
 import { Sand, Stone, Water } from "./element.js";
 import gameConfig from "./config.js";
 const { gameWidth, gameHeight, unitSize, canvas, ctx, board } = gameConfig;
-var selectedElement = null;
+var selectedElement = Sand;
 var spawnSize = 0;
 
 canvas. addEventListener("click", function(event) {
