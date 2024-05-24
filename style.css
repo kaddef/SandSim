@@ -1,15 +1,9 @@
 body {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
     background-color: #232b2b;
 }
 p {
     color: #FBFAF5;
 }
 #simBoard {
-    width: 500px;
-    height: 500px;
     image-rendering: pixelated;
 }
